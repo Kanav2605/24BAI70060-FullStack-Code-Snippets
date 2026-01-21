@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    /*Box Styling*/
+    .box { width: 300px; padding: 20px; border: 2px solid #c31313; font-family: sans-serif; }
+    input { width: 100%; padding: 8px; margin-top: 10px; box-sizing: border-box; }
+
+    /*Hide error messages by default; only display when input is invalid and not empty*/
+    .msg { display: none; color: red; font-size: 12px; margin-bottom: 10px; }
+
+    /*Error only when input is wrong and not empty*/
+    input:invalid:not(:placeholder-shown) { border: 2px solid red; }
+    input:invalid:not(:placeholder-shown) + .msg { display: block; }
+    
+    button { background: black; color: white; padding: 10px; float: right; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <h2>Student Registration</h2>
+  <form>
+    Full Name:
+    <input type="text" id="nm" placeholder=" " minlength="9" required>
+    <div class="msg">Must contain 9-50 letters</div>
+
+    Email:
+    <input type="email" id="em" placeholder=" " required>
+    <div class="msg">Valid email required</div>
+
+    Age:
+    <input type="number" id="ag" placeholder=" " min="16" max="30" required>
+    <div class="msg">Age 16-30 only</div>
+
+    <button type="submit">Register</button>
+  </form>
+</div>
+
+</body>
+</html>

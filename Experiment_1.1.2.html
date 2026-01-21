@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+    }
+
+    .card {
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      text-align: center;
+      width: 380px;
+    }
+
+    h1 { font-size: 42px; margin-bottom: 20px; }
+    
+    label { display: block; text-align: left; font-size: 24px; margin-bottom: 10px; }
+
+    input {
+      width: 100%;
+      padding: 15px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 18px;
+      box-sizing: border-box;
+    }
+
+    .btn-row { display: flex; gap: 15px; }
+
+    button {
+      flex: 1;
+      padding: 15px;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .blue { background-color: #1d61ff; }
+    .red { background-color: #ef4437; }
+
+    #message { color: #ef4437; font-size: 28px; margin-top: 20px; }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h1>Balance: $<span id="balanceText">1000</span></h1>
+    
+    <label>Amount</label>
+    <input type="number" id="amountInput">
+
+    <div class="btn-row">
+      <button class="blue" onclick="updateBalance('deposit')">Deposit</button>
+      <button class="red" onclick="updateBalance('withdraw')">Withdraw</button>
+    </div>
+
+    <p id="message"></p>
+  </div>
+
+  <script>
+    let balance = 1000;
+
+    function updateBalance(action) {
+      const input = document.getElementById('amountInput');
+      const message = document.getElementById('message');
+      const amount = parseFloat(input.value);
+      
+      message.innerText = ""; // Clear old message
+
+      if (isNaN(amount) || amount <= 0) {
+        message.innerText = "Invalid amount!";
+        return;
+      }
+
+      if (action === 'deposit') {
+        balance += amount;
+      } else {
+        if (amount > balance) {
+          message.innerText = "Insufficient funds!";
+          return;
+        }
+        balance -= amount;
+      }
+
+      // Update the display
+      document.getElementById('balanceText').innerText = balance;
+      input.value = ""; 
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Experiment 1.3: Admin Dashboard</title>
+    <style>
+        /* 1. CSS VARIABLES (THEME CONFIGURATION) */
+        :root {
+            /* Default Dark Mode Colors */
+            --body-bg: #0f172a;       /* Dark Blue Background */
+            --card-bg: #1e293b;       /* Lighter Blue for Cards */
+            --text-main: #f8fafc;     /* White Text */
+            --border-color: #334155;  /* Border Color */
+            --button-bg: #1e293b;     /* Button Background */
+        }
+
+        /* Light Mode Colors */
+        body.light-mode {
+            --body-bg: #f1f5f9;       /* Light Gray Background */
+            --card-bg: #ffffff;       /* White Cards */
+            --text-main: #0f172a;     /* Dark Text */
+            --border-color: #cbd5e1;  /* Border Color */
+            --button-bg: #ffffff;     /* Button Background */
+        }
+
+        /* 2. GLOBAL RESET & BASE STYLES */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: sans-serif;
+            transition: background-color 0.3s, color 0.3s; /* Smooth theme transition */
+        }
+
+        body {
+            background-color: var(--body-bg);
+            color: var(--text-main);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* 3. DASHBOARD GRID LAYOUT */
+        .dashboard {
+            display: grid;
+            width: 90%;
+            height: 90vh;
+            max-width: 1200px;
+            gap: 20px;
+            /* Layout: 250px sidebar, rest for content */
+            grid-template-columns: 250px 1fr; 
+            /* Layout: Header height auto, rest for body */
+            grid-template-rows: auto 1fr;     
+            /* Named Areas */
+            grid-template-areas: 
+                "header-area header-area"
+                "sidebar-area content-area";
+        }
+
+        /* 4. HEADER STYLES */
+        .header {
+            grid-area: header-area;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 10px;
+        }
+
+        .theme-btn {
+            background-color: var(--button-bg);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        /* 5. SIDEBAR STYLES */
+        .sidebar {
+            grid-area: sidebar-area;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+        }
+
+        /* 6. MAIN CONTENT AREA (NESTED GRID) */
+        .content {
+            grid-area: content-area;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 Equal Columns */
+            gap: 20px;
+            align-content: start; /* Align boxes to the top */
+        }
+
+        /* Generic Box Style for Analytics, Users, Settings */
+        .box {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            height: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+        }
+
+        /* Responsive: Stack columns on small screens */
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+                grid-template-areas: 
+                    "header-area"
+                    "sidebar-area"
+                    "content-area";
+                height: auto;
+                padding: 20px 0;
+            }
+            .content {
+                grid-template-columns: 1fr; /* 1 Column */
+            }
+            body { height: auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard">
+        <header class="header">
+            <h2>Admin Dashboard</h2>
+            <button id="toggleButton" class="theme-btn">
+                <span id="icon">☀️</span>
+                <span id="label">Light Mode</span>
+            </button>
+        </header>
+
+        <aside class="sidebar">
+            Navigation
+        </aside>
+
+        <main class="content">
+            <div class="box">Analytics</div>
+            <div class="box">Users</div>
+            <div class="box">Settings</div>
+        </main>
+    </div>
+
+    <script>
+        // Select elements
+        const toggleButton = document.getElementById('toggleButton');
+        const iconSpan = document.getElementById('icon');
+        const labelSpan = document.getElementById('label');
+        const bodyElement = document.body;
+
+        // 1. Check LocalStorage for saved theme on page load
+        const currentTheme = localStorage.getItem('site_theme');
+        
+        if (currentTheme === 'light') {
+            bodyElement.classList.add('light-mode');
+            updateButtonText(true);
+        }
+
+        // 2. Handle Button Click
+        toggleButton.addEventListener('click', () => {
+            // Toggle the class
+            bodyElement.classList.toggle('light-mode');
+            
+            // Check if light mode is now active
+            const isLightMode = bodyElement.classList.contains('light-mode');
+
+            // Save preference to memory (localStorage)
+            localStorage.setItem('site_theme', isLightMode ? 'light' : 'dark');
+
+            // Update button text
+            updateButtonText(isLightMode);
+        });
+
+        // Helper function to update text/icon
+        function updateButtonText(isLight) {
+            if (isLight) {
+                iconSpan.textContent = "🌙";
+                labelSpan.textContent = "Dark Mode";
+            } else {
+                iconSpan.textContent = "☀️";
+                labelSpan.textContent = "Light Mode";
+            }
+        }
+    </script>
+</body>
+</html>
